@@ -1,0 +1,182 @@
+/* 
+ * Cassava Mono Layout 
+ * Filosofi: Position before Decoration
+ * 
+ * Aturan Utama: Komponen yang tersusun dengan benar tidak 
+ * memerlukan warna, bayangan, ataupun bentuk khusus agar mudah dipahami.
+ */
+
+:root {
+  /* 1. Spatial Grid - Kelipatan 4px */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* 15. Layer System - Urutan deterministik */
+  --layer-0: 0;   /* Background */
+  --layer-1: 1;   /* Content */
+  --layer-2: 2;   /* Sticky */
+  --layer-3: 3;   /* Floating */
+  --layer-4: 4;   /* Modal / Overlay */
+  --layer-5: 5;   /* Notification */
+  
+  /* Variabel bawaan (bisa di-override di tema) */
+  --cm-canvas-bg: transparent;
+  --cm-border-color: currentColor;
+}
+
+/* 2. Container */
+.cm-container {
+  width: 100%;
+  max-width: 1200px; /* Bisa disesuaikan dengan kebutuhan aplikasi */
+  margin: 0 auto;
+  padding: var(--space-4);
+  background-color: var(--cm-canvas-bg);
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+/* 3. Stack Layout */
+.cm-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+/* 4. Inline Layout */
+.cm-inline {
+  display: flex;
+  flex-direction: row;
+  gap: var(--space-4);
+}
+
+/* 5. Grid Layout */
+.cm-grid {
+  display: grid;
+  gap: var(--space-4);
+  /* Membagi kolom rata sesuai jumlah elemen secara otomatis */
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+}
+
+/* 6. Split Layout */
+.cm-split {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+}
+.cm-split-main {
+  flex: 1;
+  min-width: 0; /* Mencegah flex item membesar lebih dari container */
+}
+.cm-split-side {
+  flex: none;
+  /* Width ditentukan secara spesifik di inline-style atau kelas utility lain */
+}
+
+/* 7. Fill Layout */
+.cm-fill {
+  flex: 1;
+}
+
+/* 8. Center Layout */
+.cm-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+/* 9. Floating Layout */
+.cm-floating {
+  position: fixed;
+  z-index: var(--layer-3);
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  /* Jarak floating ditentukan oleh token space di komponen masing-masing */
+}
+
+/* 10. Dock Layout */
+.cm-dock-top, 
+.cm-dock-bottom, 
+.cm-dock-left, 
+.cm-dock-right {
+  position: fixed;
+  background-color: var(--cm-canvas-bg);
+  z-index: var(--layer-2);
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+.cm-dock-top { top: 0; left: 0; right: 0; border-bottom: 1px solid var(--cm-border-color); }
+.cm-dock-bottom { bottom: 0; left: 0; right: 0; border-top: 1px solid var(--cm-border-color); }
+.cm-dock-left { top: 0; left: 0; bottom: 0; border-right: 1px solid var(--cm-border-color); }
+.cm-dock-right { top: 0; right: 0; bottom: 0; border-left: 1px solid var(--cm-border-color); }
+
+/* 11. Sticky Layout */
+.cm-sticky {
+  position: sticky;
+  top: 0; /* Default menempel di atas */
+  z-index: var(--layer-2);
+}
+
+/* 12. Overlay Layout */
+.cm-overlay {
+  position: fixed;
+  inset: 0; /* top: 0; right: 0; bottom: 0; left: 0; */
+  z-index: var(--layer-4);
+  background-color: var(--cm-canvas-bg);
+  display: flex;
+}
+
+/* 13. Scroll Layout */
+.cm-scroll-y {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.cm-scroll-x {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* 16. Alignment (Hanya Start, Center, End, Stretch, Between, Around, Evenly) */
+.cm-align-start { align-items: flex-start; }
+.cm-align-center { align-items: center; }
+.cm-align-end { align-items: flex-end; }
+.cm-align-stretch { align-items: stretch; }
+
+.cm-justify-start { justify-content: flex-start; }
+.cm-justify-center { justify-content: center; }
+.cm-justify-end { justify-content: flex-end; }
+.cm-justify-between { justify-content: space-between; }
+.cm-justify-around { justify-content: space-around; }
+.cm-justify-evenly { justify-content: space-evenly; }
+
+/* 17. Overflow */
+.cm-wrap { flex-wrap: wrap; }
+.cm-clip { 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+  white-space: nowrap; 
+}
+
+/* 14. Responsive Layout - Contoh Breakpoint Murni Struktural */
+@media (max-width: 768px) {
+  /* Breakpoint HANYA mengubah susunan, TIDAK boleh mengubah border, warna, radius */
+  .cm-split {
+    flex-direction: column;
+  }
+  .cm-split-side {
+    width: 100%;
+    order: -1; /* Tergantung kebutuhan apakah side di atas atau bawah */
+  }
+}
+

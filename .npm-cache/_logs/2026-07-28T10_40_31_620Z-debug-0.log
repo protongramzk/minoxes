@@ -1,0 +1,42 @@
+0 verbose cli /data/data/com.termux/files/usr/bin/node /data/data/com.termux/files/usr/lib/node_modules/npm/bin/npm-cli.js
+1 info using npm@11.6.0
+2 info using node@v24.9.0
+3 silly config load:file:/data/data/com.termux/files/usr/lib/node_modules/npm/npmrc
+4 silly config load:file:/data/data/com.termux/files/home/.npmrc
+5 silly config load:file:/data/data/com.termux/files/usr/etc/npmrc
+6 verbose title npm exec sv@0.14.0 create
+7 verbose argv "exec" "--" "sv@0.14.0" "create"
+8 verbose logfile logs-max:10 dir:/data/data/com.termux/files/home/minoxes/.npm-cache/_logs/2026-07-28T10_40_31_620Z-
+9 verbose logfile /data/data/com.termux/files/home/minoxes/.npm-cache/_logs/2026-07-28T10_40_31_620Z-debug-0.log
+10 silly logfile done cleaning log files
+11 silly packumentCache heap:815267840 maxSize:203816960 maxEntrySize:101908480
+12 http fetch GET 200 https://registry.npmjs.org/sv 6144ms (cache miss)
+13 silly packumentCache heap:815267840 maxSize:203816960 maxEntrySize:101908480
+14 silly packumentCache heap:815267840 maxSize:203816960 maxEntrySize:101908480
+15 silly idealTree buildDeps
+16 silly fetch manifest sv@0.14.0
+17 silly packumentCache full:https://registry.npmjs.org/sv cache-miss
+18 http fetch GET 200 https://registry.npmjs.org/sv 171ms (cache miss)
+19 silly packumentCache full:https://registry.npmjs.org/sv set size:undefined disposed:false
+20 silly placeDep ROOT sv@0.14.0 OK for:  want: 0.14.0
+21 silly fetch manifest @sveltejs/sv-utils@0.1.0
+22 silly packumentCache full:https://registry.npmjs.org/@sveltejs%2fsv-utils cache-miss
+23 http fetch GET 200 https://registry.npmjs.org/@sveltejs%2fsv-utils 7379ms (cache miss)
+24 silly packumentCache full:https://registry.npmjs.org/@sveltejs%2fsv-utils set size:undefined disposed:false
+25 silly placeDep ROOT @sveltejs/sv-utils@0.1.0 OK for: sv@0.14.0 want: 0.1.0
+26 silly reify moves {}
+27 silly audit bulk request { sv: [ '0.14.0' ], '@sveltejs/sv-utils': [ '0.1.0' ] }
+28 http cache @sveltejs/sv-utils@https://registry.npmjs.org/@sveltejs/sv-utils/-/sv-utils-0.1.0.tgz 1ms (cache hit)
+29 http cache sv@https://registry.npmjs.org/sv/-/sv-0.14.0.tgz 1ms (cache hit)
+30 silly tarball no local data for @sveltejs/sv-utils@https://registry.npmjs.org/@sveltejs/sv-utils/-/sv-utils-0.1.0.tgz. Extracting by manifest.
+31 silly tarball no local data for sv@https://registry.npmjs.org/sv/-/sv-0.14.0.tgz. Extracting by manifest.
+32 http fetch POST 200 https://registry.npmjs.org/-/npm/v1/security/advisories/bulk 363ms
+33 silly audit report {}
+34 http fetch GET 200 https://registry.npmjs.org/sv/-/sv-0.14.0.tgz 5307ms (cache miss)
+35 http fetch GET 200 https://registry.npmjs.org/@sveltejs/sv-utils/-/sv-utils-0.1.0.tgz 7953ms (cache miss)
+36 verbose cwd /data/data/com.termux/files/home/minoxes
+37 verbose os Linux 4.4.177-21848546
+38 verbose node v24.9.0
+39 verbose npm  v11.6.0
+40 verbose exit 0
+41 info ok
