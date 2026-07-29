@@ -1,6 +1,7 @@
 <script>
 	import { goto } from '$app/navigation';
 	import { saveDocument } from '$lib/db.js';
+	import { UploadCloud, File as FileIcon, X } from '@lucide/svelte';
 
 	let isDragging = $state(false);
 	let errorMsg = $state('');
@@ -100,7 +101,7 @@
 			ondrop={onDrop}
 			role="none"
 		>
-			<span class="upload-icon">📤</span>
+			<span class="upload-icon"><UploadCloud size={48} /></span>
 			<p class="drop-text">Drag and drop files here, or click to browse</p>
 			<p class="format-info">Supports MD, TXT, PDF, DOCX, XLSX, CSV, and Images</p>
 
@@ -130,12 +131,15 @@
 				<div class="cm-stack queue-list">
 					{#each filesToUpload as file, index}
 						<div class="queue-item">
-							<div class="queue-meta">
-								<span class="queue-name">{file.name}</span>
-								<span class="queue-size">{(file.size / 1024).toFixed(1)} KB</span>
+							<div class="queue-meta flex-row">
+								<span class="file-icon-wrapper"><FileIcon size={18} /></span>
+								<div class="queue-info">
+									<span class="queue-name">{file.name}</span>
+									<span class="queue-size">{(file.size / 1024).toFixed(1)} KB</span>
+								</div>
 							</div>
 							<button class="cm-btn btn-remove" onclick={() => removeFile(index)}>
-								✕
+								<X size={14} />
 							</button>
 						</div>
 					{/each}
@@ -180,8 +184,11 @@
 	}
 
 	.upload-icon {
-		font-size: 3rem;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
 		margin-bottom: var(--space-2);
+		color: var(--cm-fg);
 	}
 
 	.drop-text {
@@ -249,9 +256,27 @@
 		box-sizing: border-box;
 	}
 
-	.queue-meta {
+	.flex-row {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		gap: 12px;
+	}
+
+	.file-icon-wrapper {
+		display: inline-flex;
+		align-items: center;
+		color: var(--cm-fg);
+		opacity: 0.8;
+	}
+
+	.queue-info {
 		display: flex;
 		flex-direction: column;
+		min-width: 0;
+	}
+
+	.queue-meta {
 		min-width: 0;
 	}
 
@@ -271,7 +296,9 @@
 		height: 32px;
 		width: 32px;
 		padding: 0;
-		font-size: 0.85rem;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
 	}
 
 	.btn-remove:hover {

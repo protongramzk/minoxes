@@ -2,9 +2,9 @@
 	import { onMount } from 'svelte';
 	import { db } from '$lib/db.js';
 	import { liveQuery } from 'dexie';
+	import { Search, FileText, Trash2, Edit3, Sparkles, Plus, BookOpen, Presentation, Image, FileCode } from '@lucide/svelte';
 
 	let searchQuery = $state('');
-	let isScrolled = $state(false);
 
 	// Fetch documents reactively using liveQuery
 	/** @type {any[]} */
@@ -21,19 +21,8 @@
 			error: (err) => console.error(err)
 		});
 
-		const handleScroll = () => {
-			if (window.scrollY > 40) {
-				isScrolled = true;
-			} else {
-				isScrolled = false;
-			}
-		};
-
-		window.addEventListener('scroll', handleScroll);
-
 		return () => {
 			subscription.unsubscribe();
-			window.removeEventListener('scroll', handleScroll);
 		};
 	});
 
@@ -84,32 +73,31 @@
 	}
 
 	/**
-	 * Determine emoji for file type
+	 * Determine Lucide icon component based on file type
 	 * @param {string} type
-	 * @returns {string}
 	 */
-	function getDocEmoji(type) {
+	function getDocIcon(type) {
 		switch (type) {
 			case 'md':
-				return '📝';
+				return FileCode;
 			case 'txt':
-				return '📄';
+				return FileText;
 			case 'pdf':
-				return '📕';
+				return BookOpen;
 			case 'docx':
-				return '📘';
+				return FileText;
 			case 'sheet':
-				return '📊';
+				return Presentation;
 			case 'image':
-				return '🖼️';
+				return Image;
 			default:
-				return '📁';
+				return FileText;
 		}
 	}
 </script>
 
-<!-- Collapsible Thumb Friendly Header -->
-<header class="cm-thumb-header" class:is-scrolled={isScrolled}>
+<!-- Collapsible Thumb Friendly Header (Normal scroll div, center aligned) -->
+<header class="cm-thumb-header">
 	<h1 class="cm-header-title">MINOXES</h1>
 	<p class="cm-header-subtitle">Your offline-first, client-side document reader & writer.</p>
 </header>
@@ -117,18 +105,21 @@
 <div class="cm-container">
 	<!-- Search Input (Follows cm-bottom-search layout look but placed under header for standard list) -->
 	<div class="search-container">
-		<input
-			type="text"
-			placeholder="Search documents..."
-			class="cm-input"
-			bind:value={searchQuery}
-		/>
+		<div class="search-box">
+			<span class="search-icon-wrapper"><Search size={18} /></span>
+			<input
+				type="text"
+				placeholder="Search documents..."
+				class="cm-input search-input"
+				bind:value={searchQuery}
+			/>
+		</div>
 	</div>
 
 	<!-- Document Stack -->
 	{#if filteredDocuments.length === 0}
 		<div class="cm-center empty-state">
-			<span class="empty-emoji">🏜️</span>
+			<span class="empty-icon-wrapper"><Sparkles size={48} /></span>
 			<p class="empty-title">No documents found</p>
 			<p class="empty-subtitle">Upload files or write notes to get started!</p>
 			<div class="empty-actions">
@@ -139,9 +130,12 @@
 	{:else}
 		<div class="cm-stack document-list">
 			{#each filteredDocuments as doc (doc.id)}
+				{@const IconComp = getDocIcon(doc.type)}
 				<div class="document-card">
 					<div class="doc-info">
-						<span class="doc-icon">{getDocEmoji(doc.type)}</span>
+						<span class="doc-icon">
+							<IconComp size={32} />
+						</span>
 						<div class="doc-meta">
 							<span class="doc-name">{doc.name}</span>
 							<span class="doc-details">
@@ -150,11 +144,17 @@
 						</div>
 					</div>
 					<div class="doc-actions">
-						<a href="/reader/{doc.id}" class="cm-btn cm-btn-primary">Open</a>
+						<a href="/reader/{doc.id}" class="cm-btn cm-btn-primary">
+							<BookOpen size={16} class="btn-icon" /> Open
+						</a>
 						{#if doc.type === 'md'}
-							<a href="/writer?edit={doc.id}" class="cm-btn">Edit</a>
+							<a href="/writer?edit={doc.id}" class="cm-btn">
+								<Edit3 size={16} class="btn-icon" /> Edit
+							</a>
 						{/if}
-						<button class="cm-btn btn-danger" onclick={() => deleteDoc(doc.id)}>Delete</button>
+						<button class="cm-btn btn-danger" onclick={() => deleteDoc(doc.id)}>
+							<Trash2 size={16} class="btn-icon" /> Delete
+						</button>
 					</div>
 				</div>
 			{/each}
@@ -167,16 +167,40 @@
 		margin-bottom: var(--space-4);
 	}
 
+	.search-box {
+		position: relative;
+		display: flex;
+		align-items: center;
+		width: 100%;
+	}
+
+	.search-icon-wrapper {
+		position: absolute;
+		left: 16px;
+		display: flex;
+		align-items: center;
+		color: var(--cm-fg);
+		opacity: 0.6;
+		pointer-events: none;
+	}
+
+	.search-input {
+		padding-left: 48px !important;
+	}
+
 	.empty-state {
 		padding: var(--space-10) 0;
 		text-align: center;
-		border: 1px dashed var(--cm-border);
+		border: 1px solid var(--cm-border);
 		background-color: var(--cm-bg-muted);
 	}
 
-	.empty-emoji {
-		font-size: 3rem;
-		margin-bottom: var(--space-2);
+	.empty-icon-wrapper {
+		display: inline-flex;
+		align-items: center;
+		margin-bottom: var(--space-3);
+		color: var(--cm-fg);
+		opacity: 0.8;
 	}
 
 	.empty-title {
@@ -219,8 +243,10 @@
 	}
 
 	.doc-icon {
-		font-size: 2rem;
-		line-height: 1;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		color: var(--cm-fg);
 	}
 
 	.doc-meta {
@@ -250,6 +276,7 @@
 		flex: 1;
 		border: none;
 		border-right: 1px solid var(--cm-border);
+		gap: 6px;
 	}
 
 	.doc-actions .cm-btn:last-child {
@@ -260,6 +287,11 @@
 	.btn-danger:focus {
 		background-color: #d32f2f;
 		color: white;
+	}
+
+	:global(.btn-icon) {
+		display: inline-flex;
+		align-items: center;
 	}
 
 	@media (min-width: 600px) {

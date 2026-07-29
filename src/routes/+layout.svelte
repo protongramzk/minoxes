@@ -2,6 +2,7 @@
 	import favicon from '$lib/assets/favicon.svg';
 	import { theme, font, textScale } from '$lib/stores.js';
 	import { page } from '$app/stores';
+	import { BookOpen, Upload, SquarePen, Settings } from '@lucide/svelte';
 
 	let { children } = $props();
 
@@ -36,22 +37,22 @@
 	<!-- Spacer to prevent content from being hidden behind sticky bottom elements -->
 	<div style="height: 120px;"></div>
 
-	<!-- Bottom Navigation Bar -->
+	<!-- Bottom Navigation Bar (No emojis, Lucide icons only!) -->
 	<nav class="cm-bottom-nav">
 		<a href="/" class="cm-nav-item" class:is-active={isActive('/')}>
-			<span class="cm-nav-icon">📖</span>
+			<span class="cm-nav-icon"><BookOpen size={20} /></span>
 			<span class="cm-nav-label">Library</span>
 		</a>
 		<a href="/upload" class="cm-nav-item" class:is-active={isActive('/upload')}>
-			<span class="cm-nav-icon">📤</span>
+			<span class="cm-nav-icon"><Upload size={20} /></span>
 			<span class="cm-nav-label">Upload</span>
 		</a>
 		<a href="/writer" class="cm-nav-item" class:is-active={isActive('/writer')}>
-			<span class="cm-nav-icon">✍️</span>
+			<span class="cm-nav-icon"><SquarePen size={20} /></span>
 			<span class="cm-nav-label">Write</span>
 		</a>
 		<a href="/settings" class="cm-nav-item" class:is-active={isActive('/settings')}>
-			<span class="cm-nav-icon">⚙️</span>
+			<span class="cm-nav-icon"><Settings size={20} /></span>
 			<span class="cm-nav-label">Settings</span>
 		</a>
 	</nav>
@@ -66,7 +67,7 @@
 		--cm-text-scale: 1.0;
 	}
 
-	/* Extend theme definitions with Sepia & Nord */
+	/* Extend theme definitions with Sepia, Nord, and custom requested ones */
 	:global(:root.dark) {
 		--cm-bg: #111111;
 		--cm-fg: #eeeeee;
@@ -92,6 +93,52 @@
 		--cm-bg-inverse: #eceff4;
 		--cm-fg-inverse: #2e3440;
 		--cm-bg-muted: #3b4252;
+	}
+
+	/* Custom Requested Themes */
+	:global(:root.strawberry) {
+		--cm-bg: #fff0f5; /* soft pastel lavender/pink */
+		--cm-fg: #8b2500; /* soft dark brownish red */
+		--cm-border: #ffb6c1; /* light pink border */
+		--cm-bg-inverse: #ffb6c1;
+		--cm-fg-inverse: #fff0f5;
+		--cm-bg-muted: #ffe4e1;
+	}
+
+	:global(:root.violet-light) {
+		--cm-bg: #f3e5f5; /* light violet */
+		--cm-fg: #4a148c; /* deep purple text */
+		--cm-border: #d1c4e9; /* soft purple border */
+		--cm-bg-inverse: #4a148c;
+		--cm-fg-inverse: #f3e5f5;
+		--cm-bg-muted: #e1bee7;
+	}
+
+	:global(:root.violet-dark) {
+		--cm-bg: #120024; /* extremely dark violet */
+		--cm-fg: #e0b0ff; /* mauve light violet text */
+		--cm-border: #6a0dad; /* dark purple border */
+		--cm-bg-inverse: #e0b0ff;
+		--cm-fg-inverse: #120024;
+		--cm-bg-muted: #2b0045;
+	}
+
+	:global(:root.emerald-cave) {
+		--cm-bg: #062010; /* very dark emerald */
+		--cm-fg: #50c878; /* rich emerald green text */
+		--cm-border: #004b23; /* forest dark border */
+		--cm-bg-inverse: #50c878;
+		--cm-fg-inverse: #062010;
+		--cm-bg-muted: #0c331a;
+	}
+
+	:global(:root.dark-ocean) {
+		--cm-bg: #001220; /* deep dark marine blue */
+		--cm-fg: #00bfff; /* deep sky blue text */
+		--cm-border: #002d4a; /* marine border */
+		--cm-bg-inverse: #00bfff;
+		--cm-fg-inverse: #001220;
+		--cm-bg-muted: #00223b;
 	}
 
 	/* Map font styles to bodies */
@@ -147,6 +194,8 @@
 	}
 
 	.cm-nav-icon {
-		font-size: 1.25rem;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
 	}
 </style>

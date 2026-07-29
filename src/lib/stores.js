@@ -17,12 +17,8 @@ if (isBrowser) {
 		// Apply class directly to html/body element
 		const root = document.documentElement;
 		root.className = ''; // Reset
-		if (value === 'dark') {
-			root.classList.add('dark');
-		} else if (value === 'sepia') {
-			root.classList.add('sepia');
-		} else if (value === 'nord') {
-			root.classList.add('nord');
+		if (value !== 'light') {
+			root.classList.add(value);
 		}
 	});
 
