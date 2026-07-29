@@ -3,6 +3,7 @@
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import { db } from '$lib/db.js';
+	import { Save, X } from '@lucide/svelte';
 
 	/** @type {number | null} */
 	let docId = $state(null);
@@ -111,10 +112,14 @@
 			></textarea>
 		</div>
 
-		<!-- Action Bar adhering to cm-thumb-action-bar at the bottom -->
+		<!-- Action Bar adhering to cm-thumb-action-bar at the bottom (Lucide icons, no emojis) -->
 		<div class="cm-thumb-action-bar">
-			<button class="cm-btn btn-cancel" onclick={handleCancel}>Cancel</button>
-			<button class="cm-btn cm-btn-primary" onclick={handleSave}>Save Note</button>
+			<button class="cm-btn btn-cancel" onclick={handleCancel}>
+				<X size={16} class="btn-icon" /> Cancel
+			</button>
+			<button class="cm-btn cm-btn-primary" onclick={handleSave}>
+				<Save size={16} class="btn-icon" /> Save Note
+			</button>
 		</div>
 	</div>
 </div>
@@ -166,8 +171,15 @@
 		color: #2e7d32;
 	}
 
+	.btn-cancel {
+		gap: 6px;
+	}
 	.btn-cancel:hover {
 		background-color: var(--cm-bg-muted);
+	}
+
+	.cm-btn-primary {
+		gap: 6px;
 	}
 
 	/* Push action bar over the bottom nav safely */

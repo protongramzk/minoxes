@@ -1,6 +1,7 @@
 <script>
 	import { theme, font } from '$lib/stores.js';
 	import { db } from '$lib/db.js';
+	import { AlertTriangle } from '@lucide/svelte';
 
 	let statusMsg = $state('');
 
@@ -81,6 +82,41 @@
 				>
 					Nord (Cold Slate)
 				</button>
+				<button
+					class="cm-btn theme-choice strawberry-choice"
+					class:active-choice={$theme === 'strawberry'}
+					onclick={() => selectTheme('strawberry')}
+				>
+					Strawberry Pink
+				</button>
+				<button
+					class="cm-btn theme-choice violet-light-choice"
+					class:active-choice={$theme === 'violet-light'}
+					onclick={() => selectTheme('violet-light')}
+				>
+					Violet Light
+				</button>
+				<button
+					class="cm-btn theme-choice violet-dark-choice"
+					class:active-choice={$theme === 'violet-dark'}
+					onclick={() => selectTheme('violet-dark')}
+				>
+					Violet Dark
+				</button>
+				<button
+					class="cm-btn theme-choice emerald-cave-choice"
+					class:active-choice={$theme === 'emerald-cave'}
+					onclick={() => selectTheme('emerald-cave')}
+				>
+					Emerald Cave
+				</button>
+				<button
+					class="cm-btn theme-choice dark-ocean-choice"
+					class:active-choice={$theme === 'dark-ocean'}
+					onclick={() => selectTheme('dark-ocean')}
+				>
+					Deep Dark Ocean
+				</button>
 			</div>
 		</div>
 
@@ -142,7 +178,7 @@
 
 		<!-- Danger Zone -->
 		<div class="settings-group danger-zone">
-			<h3 class="group-title danger-title">Danger Zone</h3>
+			<h3 class="group-title danger-title"><AlertTriangle size={18} class="btn-icon" /> Danger Zone</h3>
 			<p class="group-desc text-danger">Permanently erase all locally stored data inside IndexedDB database.</p>
 			<button class="cm-btn btn-danger-action" onclick={clearAllData}>
 				Hapus Semua Data
@@ -171,6 +207,9 @@
 		margin: 0 0 var(--space-1) 0;
 		font-size: 1.15rem;
 		font-weight: 800;
+		display: flex;
+		align-items: center;
+		gap: 6px;
 	}
 
 	.group-desc {
@@ -204,6 +243,11 @@
 	.dark-choice { background-color: #111111; color: #eeeeee; border: 1px solid var(--cm-border); }
 	.sepia-choice { background-color: #f4ecd8; color: #5b4636; border: 1px solid var(--cm-border); }
 	.nord-choice { background-color: #2e3440; color: #d8dee9; border: 1px solid var(--cm-border); }
+	.strawberry-choice { background-color: #fff0f5; color: #8b2500; border: 1px solid #ffb6c1; }
+	.violet-light-choice { background-color: #f3e5f5; color: #4a148c; border: 1px solid #d1c4e9; }
+	.violet-dark-choice { background-color: #120024; color: #e0b0ff; border: 1px solid #6a0dad; }
+	.emerald-cave-choice { background-color: #062010; color: #50c878; border: 1px solid #004b23; }
+	.dark-ocean-choice { background-color: #001220; color: #00bfff; border: 1px solid #002d4a; }
 
 	.active-choice {
 		outline: 3px solid var(--cm-fg);

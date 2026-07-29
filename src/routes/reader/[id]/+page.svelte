@@ -6,6 +6,7 @@
 	import { marked } from 'marked';
 	import mammoth from 'mammoth';
 	import * as XLSX from 'xlsx';
+	import { ArrowLeft, Settings, Loader2, AlertCircle, X, ChevronLeft, ChevronRight, Minus, Plus } from '@lucide/svelte';
 
 	/** @type {number | null} */
 	let docId = $state(null);
@@ -246,21 +247,21 @@
 
 <header class="cm-thumb-header is-scrolled">
 	<div class="header-content">
-		<a href="/" class="btn-back">⬅️</a>
+		<a href="/" class="btn-back"><ArrowLeft size={24} /></a>
 		<h1 class="cm-header-title">{doc ? doc.name : 'Reader View'}</h1>
-		<button class="btn-settings-toggle" onclick={() => showSettingsSheet = true}>⚙️</button>
+		<button class="btn-settings-toggle" onclick={() => showSettingsSheet = true}><Settings size={24} /></button>
 	</div>
 </header>
 
 <div class="cm-container reader-container">
 	{#if loading}
 		<div class="cm-center loading-state">
-			<span class="loading-spinner">⌛</span>
+			<span class="loading-spinner"><Loader2 size={48} /></span>
 			<p>Parsing document content, please wait...</p>
 		</div>
 	{:else if errorMsg}
 		<div class="cm-center error-state">
-			<span class="error-icon">⚠️</span>
+			<span class="error-icon"><AlertCircle size={48} /></span>
 			<p class="error-title">Unable to Read Document</p>
 			<p class="error-subtitle">{errorMsg}</p>
 			<a href="/" class="cm-btn cm-btn-primary">Back to Library</a>
@@ -304,11 +305,11 @@
 				<div class="pdf-viewer-wrapper">
 					<div class="pdf-controls">
 						<button class="cm-btn" onclick={prevPdfPage} disabled={pdfCurrentPage <= 1 || pdfRendering}>
-							◀ Prev
+							<ChevronLeft size={16} class="btn-icon" /> Prev
 						</button>
 						<span class="page-num">Page {pdfCurrentPage} of {pdfNumPages}</span>
 						<button class="cm-btn" onclick={nextPdfPage} disabled={pdfCurrentPage >= pdfNumPages || pdfRendering}>
-							Next ▶
+							Next <ChevronRight size={16} class="btn-icon" />
 						</button>
 					</div>
 					<div class="pdf-canvas-container">
@@ -326,7 +327,7 @@
 		<div class="cm-bottom-sheet" onclick={(e) => e.stopPropagation()} role="none">
 			<div class="sheet-header">
 				<h3 class="sheet-title">Reader Options</h3>
-				<button class="btn-close-sheet" onclick={() => showSettingsSheet = false}>✕</button>
+				<button class="btn-close-sheet" onclick={() => showSettingsSheet = false}><X size={20} /></button>
 			</div>
 
 			<!-- Theme Picker -->
@@ -360,6 +361,41 @@
 						onclick={() => selectTheme('nord')}
 					>
 						Nord
+					</button>
+					<button
+						class="cm-btn theme-choice strawberry-choice"
+						class:active-choice={$theme === 'strawberry'}
+						onclick={() => selectTheme('strawberry')}
+					>
+						Strawberry Pink
+					</button>
+					<button
+						class="cm-btn theme-choice violet-light-choice"
+						class:active-choice={$theme === 'violet-light'}
+						onclick={() => selectTheme('violet-light')}
+					>
+						Violet Light
+					</button>
+					<button
+						class="cm-btn theme-choice violet-dark-choice"
+						class:active-choice={$theme === 'violet-dark'}
+						onclick={() => selectTheme('violet-dark')}
+					>
+						Violet Dark
+					</button>
+					<button
+						class="cm-btn theme-choice emerald-cave-choice"
+						class:active-choice={$theme === 'emerald-cave'}
+						onclick={() => selectTheme('emerald-cave')}
+					>
+						Emerald Cave
+					</button>
+					<button
+						class="cm-btn theme-choice dark-ocean-choice"
+						class:active-choice={$theme === 'dark-ocean'}
+						onclick={() => selectTheme('dark-ocean')}
+					>
+						Deep Dark Ocean
 					</button>
 				</div>
 			</div>
@@ -424,9 +460,9 @@
 				<div class="option-section">
 					<span class="option-label">Text Scale Level</span>
 					<div class="scale-sizer">
-						<button class="cm-btn" onclick={() => changeScale(-0.1)}>A-</button>
+						<button class="cm-btn" onclick={() => changeScale(-0.1)}><Minus size={16} /></button>
 						<span class="scale-value">{Math.round($textScale * 100)}%</span>
-						<button class="cm-btn" onclick={() => changeScale(0.1)}>A+</button>
+						<button class="cm-btn" onclick={() => changeScale(0.1)}><Plus size={16} /></button>
 					</div>
 				</div>
 			{/if}
@@ -448,7 +484,9 @@
 		background: none;
 		border: none;
 		cursor: pointer;
-		font-size: 1.5rem;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
 		padding: 0;
 		color: var(--cm-fg);
 	}
@@ -468,13 +506,16 @@
 	}
 
 	.loading-spinner {
-		font-size: 3rem;
-		display: inline-block;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
 		animation: spin 2s linear infinite;
 	}
 
 	.error-icon {
-		font-size: 3rem;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
 		color: #d32f2f;
 	}
 
@@ -661,6 +702,9 @@
 		border: none;
 		font-size: 1.25rem;
 		cursor: pointer;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
 		color: var(--cm-fg);
 	}
 
@@ -686,6 +730,12 @@
 		gap: var(--space-2);
 	}
 
+	@media (min-width: 450px) {
+		.theme-grid {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+
 	.theme-choice,
 	.font-choice {
 		font-size: 0.9rem;
@@ -693,10 +743,15 @@
 		min-height: 40px;
 	}
 
-	.light-choice { background-color: #ffffff; color: #111111; }
-	.dark-choice { background-color: #111111; color: #eeeeee; }
-	.sepia-choice { background-color: #f4ecd8; color: #5b4636; }
-	.nord-choice { background-color: #2e3440; color: #d8dee9; }
+	.light-choice { background-color: #ffffff; color: #111111; border: 1px solid var(--cm-border); }
+	.dark-choice { background-color: #111111; color: #eeeeee; border: 1px solid var(--cm-border); }
+	.sepia-choice { background-color: #f4ecd8; color: #5b4636; border: 1px solid var(--cm-border); }
+	.nord-choice { background-color: #2e3440; color: #d8dee9; border: 1px solid var(--cm-border); }
+	.strawberry-choice { background-color: #fff0f5; color: #8b2500; border: 1px solid #ffb6c1; }
+	.violet-light-choice { background-color: #f3e5f5; color: #4a148c; border: 1px solid #d1c4e9; }
+	.violet-dark-choice { background-color: #120024; color: #e0b0ff; border: 1px solid #6a0dad; }
+	.emerald-cave-choice { background-color: #062010; color: #50c878; border: 1px solid #004b23; }
+	.dark-ocean-choice { background-color: #001220; color: #00bfff; border: 1px solid #002d4a; }
 
 	.active-choice {
 		outline: 3px solid var(--cm-fg);
@@ -712,6 +767,9 @@
 	.scale-sizer .cm-btn {
 		flex: 1;
 		min-height: 40px;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
 	}
 
 	.scale-value {

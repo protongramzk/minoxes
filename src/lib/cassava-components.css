@@ -72,47 +72,34 @@ body {
   color: var(--cm-fg-inverse);
 }
 
-/* 1 & 7. Thumb Friendly Header & Collapsible */
+/* 1 & 7. Thumb Friendly Header & Collapsible (Normal div, center aligned, scrolls naturally) */
 .cm-thumb-header {
   height: var(--cm-header-tall);
   display: flex;
   flex-direction: column;
-  justify-content: flex-end; /* Teks ngumpul di bawah dekat jempol */
+  justify-content: center; /* Center aligned vertically */
+  align-items: center;    /* Center aligned horizontally */
+  text-align: center;     /* Center aligned text */
   padding: var(--cm-edge-padding);
   border-bottom: 1px solid var(--cm-border);
   background-color: var(--cm-bg);
-  position: sticky;
-  top: 0;
+  position: relative;     /* Not fixed, not sticky! Scrolls naturally! */
   z-index: 10;
-  transition: height var(--cm-speed) ease;
-}
-
-/* Class ini di-toggle via JS saat scroll jalan */
-.cm-thumb-header.is-scrolled {
-  height: var(--cm-header-short);
-  justify-content: center;
+  box-sizing: border-box;
 }
 
 .cm-header-title {
-  font-size: 2rem;
+  font-size: 4rem;        /* 2x bigger (Original was 2rem) */
   line-height: 1.1;
   margin: 0;
   font-weight: 800;
-  transition: font-size var(--cm-speed) ease;
-}
-
-.cm-thumb-header.is-scrolled .cm-header-title {
-  font-size: 1.2rem;
 }
 
 .cm-header-subtitle {
-  font-size: 1rem;
-  margin-top: 8px;
+  font-size: 1.1rem;
+  margin-top: 12px;
   color: var(--cm-fg);
   opacity: 0.7;
-}
-.cm-thumb-header.is-scrolled .cm-header-subtitle {
-  display: none; /* Hilang saat menyusut */
 }
 
 /* 2. Bottom Navigation */
