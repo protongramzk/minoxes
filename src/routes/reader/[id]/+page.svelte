@@ -7,6 +7,7 @@
 	import mammoth from 'mammoth';
 	import * as XLSX from 'xlsx';
 	import { ArrowLeft, Settings, Loader2, AlertCircle, X, ChevronLeft, ChevronRight, Minus, Plus } from '@lucide/svelte';
+	import pdfjsWorkerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 
 	/** @type {number | null} */
 	let docId = $state(null);
@@ -154,9 +155,8 @@
 			// Import pdfjs-dist dynamically in client-side
 			const pdfjs = await import('pdfjs-dist');
 
-			// Setup worker
-			const workerUrl = new URL('pdfjs-dist/build/pdf.worker.min.mjs', import.meta.url).toString();
-			pdfjs.GlobalWorkerOptions.workerSrc = workerUrl;
+			// Setup worker using SvelteKit/Vite compiled URL
+			pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorkerUrl;
 
 			const arrayBuffer = await blob.arrayBuffer();
 			const loadingTask = pdfjs.getDocument({ data: arrayBuffer });
@@ -165,7 +165,13 @@
 			pdfNumPages = loadedPdf.numPages;
 			pdfCurrentPage = 1;
 
-			await tick();
+			// Robust polling tick wait to ensure canvas is injected into DOM by Svelte 5
+			for (let i = 0; i < 15; i++) {
+				if (pdfCanvas) break;
+				await tick();
+				await new Promise((r) => setTimeout(r, 60));
+			}
+
 			await renderPdfPage(pdfCurrentPage);
 		} catch (err) {
 			console.error('PDF Init Error:', err);
@@ -245,12 +251,11 @@
 	}
 </script>
 
-<header class="cm-thumb-header is-scrolled">
-	<div class="header-content">
-		<a href="/" class="btn-back"><ArrowLeft size={24} /></a>
-		<h1 class="cm-header-title">{doc ? doc.name : 'Reader View'}</h1>
-		<button class="btn-settings-toggle" onclick={() => showSettingsSheet = true}><Settings size={24} /></button>
-	</div>
+<!-- Compact non-overflowing detail header (Center aligned and ellipsis truncated) -->
+<header class="cm-compact-header">
+	<a href="/" class="btn-back"><ArrowLeft size={24} /></a>
+	<h1 class="cm-compact-title">{doc ? doc.name : 'Reader View'}</h1>
+	<button class="btn-settings-toggle" onclick={() => showSettingsSheet = true}><Settings size={24} /></button>
 </header>
 
 <div class="cm-container reader-container">
@@ -471,14 +476,6 @@
 {/if}
 
 <style>
-	.header-content {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		width: 100%;
-		gap: var(--space-3);
-	}
-
 	.btn-back,
 	.btn-settings-toggle {
 		background: none;
@@ -681,7 +678,20 @@
 		height: auto;
 	}
 
-	/* Bottom sheet styles */
+	/* Bottom sheet styles (Slide-up animation included) */
+	.cm-bottom-sheet {
+		animation: slideUp 0.25s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+	}
+
+	@keyframes slideUp {
+		from {
+			transform: translateY(100%);
+		}
+		to {
+			transform: translateY(0);
+		}
+	}
+
 	.sheet-header {
 		display: flex;
 		justify-content: space-between;

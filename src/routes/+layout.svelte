@@ -62,6 +62,11 @@
 	@import '../lib/cassava-layout.css';
 	@import '../lib/cassava-components.css';
 
+	/* Smooth animation transition for all elements when themes change */
+	:global(*) {
+		transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+	}
+
 	:global(:root) {
 		/* Apply customizable scale factor for text elements */
 		--cm-text-scale: 1.0;
@@ -169,7 +174,6 @@
 		color: var(--cm-fg);
 		font-size: calc(1rem * var(--cm-text-scale));
 		line-height: 1.5;
-		transition: background-color var(--cm-speed) ease, color var(--cm-speed) ease;
 	}
 
 	.cm-app {
