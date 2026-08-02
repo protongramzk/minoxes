@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { db } from '$lib/db.js';
 	import { liveQuery } from 'dexie';
-	import { Search, FileText, Trash2, Edit3, Sparkles, Plus, BookOpen, Presentation, Image, FileCode } from '@lucide/svelte';
+	import { Search, FileText, Trash2, Edit3, Sparkles, Plus, BookOpen, Image, FileCode, Table } from '@lucide/svelte';
 
 	let searchQuery = $state('');
 
@@ -87,7 +87,7 @@
 			case 'docx':
 				return FileText;
 			case 'sheet':
-				return Presentation;
+				return Table;
 			case 'image':
 				return Image;
 			default:

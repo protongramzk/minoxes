@@ -1,0 +1,11 @@
+
+> minoxes@0.0.1 dev /app
+> vite dev --port 5173
+
+10:35:50 AM [vite] (client) Forced re-optimization of dependencies
+
+  VITE v7.3.6  ready in 1093 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose
+ ELIFECYCLE  Command failed with exit code 143.
