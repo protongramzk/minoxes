@@ -1,10 +1,19 @@
 <script>
+	import { onMount } from 'svelte';
 	import favicon from '$lib/assets/favicon.svg';
 	import { theme, font, textScale } from '$lib/stores.js';
 	import { page } from '$app/stores';
 	import { BookOpen, Upload, SquarePen, Settings } from '@lucide/svelte';
 
 	let { children } = $props();
+
+	onMount(() => {
+		if ('serviceWorker' in navigator) {
+			navigator.serviceWorker.register('/sw.js')
+				.then((reg) => console.log('Service Worker registered successfully:', reg))
+				.catch((err) => console.error('Service Worker registration failed:', err));
+		}
+	});
 
 	/**
 	 * Computed isActive check for Bottom Nav links

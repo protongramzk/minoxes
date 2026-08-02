@@ -1,0 +1,19 @@
+{
+  "name": "Minoxes Document Library",
+  "short_name": "Minoxes",
+  "description": "Offline-first, client-side document reader & writer with Svelte 5.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#111111",
+  "theme_color": "#111111",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/minoxes.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
