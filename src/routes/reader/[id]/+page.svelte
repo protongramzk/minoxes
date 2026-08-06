@@ -276,17 +276,19 @@
 
 			<!-- Spreadsheet (XLSX / CSV) rendering -->
 			{:else if doc.type === 'sheet'}
-				<div class="sheet-tabs cm-scroll-x">
-					{#each sheetNames as name}
-						<button
-							class="cm-btn tab-btn"
-							class:active-tab={activeSheet === name}
-							onclick={() => handleSheetChange(name)}
-						>
-							{name}
-						</button>
-					{/each}
-				</div>
+				{#if sheetNames.length > 1}
+					<div class="sheet-tabs cm-scroll-x">
+						{#each sheetNames as name}
+							<button
+								class="cm-btn tab-btn"
+								class:active-tab={activeSheet === name}
+								onclick={() => handleSheetChange(name)}
+							>
+								{name}
+							</button>
+						{/each}
+					</div>
+				{/if}
 				<div class="sheet-table-wrapper cm-scroll-x">
 					<!-- Bind sheet styling to unified CSS variables -->
 					<div class="sheet-html-container">
