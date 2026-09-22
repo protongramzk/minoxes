@@ -46,7 +46,7 @@
 	<!-- Spacer to prevent content from being hidden behind sticky bottom elements -->
 	<div style="height: 120px;"></div>
 
-	<!-- Bottom Navigation Bar (No emojis, Lucide icons only!) -->
+	<!-- Bottom Navigation Bar (Lucide icons) -->
 	<nav class="cm-bottom-nav">
 		<a href="/" class="cm-nav-item" class:is-active={isActive('/')}>
 			<span class="cm-nav-icon"><BookOpen size={20} /></span>
@@ -72,79 +72,100 @@
 	@import '../lib/cassava-components.css';
 
 	:global(:root) {
-		/* Apply customizable scale factor for text elements */
 		--cm-text-scale: 1.0;
 	}
 
-	/* Extend theme definitions with Sepia, Nord, and custom requested ones */
+	/* Extend theme definitions with smooth elevation colors and subtle borders */
 	:global(:root.dark) {
-		--cm-bg: #111111;
-		--cm-fg: #eeeeee;
-		--cm-border: #444444;
-		--cm-bg-inverse: #eeeeee;
-		--cm-fg-inverse: #111111;
-		--cm-bg-muted: #222222;
+		--cm-bg: #0f1115;
+		--cm-bg-surface: #181b20;
+		--cm-bg-elevated: #22262e;
+		--cm-fg: #f0f2f5;
+		--cm-border: rgba(255, 255, 255, 0.1);
+		--cm-bg-inverse: #f0f2f5;
+		--cm-fg-inverse: #0f1115;
+		--cm-bg-muted: #1c2026;
+		--cm-shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+		--cm-shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+		--cm-shadow-lg: 0 10px 25px rgba(0,0,0,0.5);
 	}
 
 	:global(:root.sepia) {
 		--cm-bg: #f4ecd8;
+		--cm-bg-surface: #fbf6e9;
+		--cm-bg-elevated: #ffffff;
 		--cm-fg: #5b4636;
-		--cm-border: #8f745d;
+		--cm-border: rgba(91, 70, 54, 0.15);
 		--cm-bg-inverse: #5b4636;
 		--cm-fg-inverse: #f4ecd8;
 		--cm-bg-muted: #eaddc5;
+		--cm-shadow-sm: 0 1px 3px rgba(91, 70, 54, 0.08);
+		--cm-shadow-md: 0 4px 12px rgba(91, 70, 54, 0.12);
 	}
 
 	:global(:root.nord) {
 		--cm-bg: #2e3440;
-		--cm-fg: #d8dee9;
-		--cm-border: #4c566a;
+		--cm-bg-surface: #3b4252;
+		--cm-bg-elevated: #434c5e;
+		--cm-fg: #eceff4;
+		--cm-border: rgba(216, 222, 233, 0.12);
 		--cm-bg-inverse: #eceff4;
 		--cm-fg-inverse: #2e3440;
-		--cm-bg-muted: #3b4252;
+		--cm-bg-muted: #4c566a;
+		--cm-shadow-sm: 0 1px 3px rgba(0,0,0,0.2);
+		--cm-shadow-md: 0 4px 12px rgba(0,0,0,0.3);
 	}
 
-	/* Custom Requested Themes */
 	:global(:root.strawberry) {
-		--cm-bg: #fff0f5; /* soft pastel lavender/pink */
-		--cm-fg: #8b2500; /* soft dark brownish red */
-		--cm-border: #ffb6c1; /* light pink border */
+		--cm-bg: #fff0f5;
+		--cm-bg-surface: #ffffff;
+		--cm-bg-elevated: #fff8fa;
+		--cm-fg: #8b2500;
+		--cm-border: rgba(255, 182, 193, 0.5);
 		--cm-bg-inverse: #ffb6c1;
-		--cm-fg-inverse: #fff0f5;
+		--cm-fg-inverse: #8b2500;
 		--cm-bg-muted: #ffe4e1;
 	}
 
 	:global(:root.violet-light) {
-		--cm-bg: #f3e5f5; /* light violet */
-		--cm-fg: #4a148c; /* deep purple text */
-		--cm-border: #d1c4e9; /* soft purple border */
+		--cm-bg: #f3e5f5;
+		--cm-bg-surface: #ffffff;
+		--cm-bg-elevated: #faf5fc;
+		--cm-fg: #4a148c;
+		--cm-border: rgba(209, 196, 233, 0.6);
 		--cm-bg-inverse: #4a148c;
 		--cm-fg-inverse: #f3e5f5;
 		--cm-bg-muted: #e1bee7;
 	}
 
 	:global(:root.violet-dark) {
-		--cm-bg: #120024; /* extremely dark violet */
-		--cm-fg: #e0b0ff; /* mauve light violet text */
-		--cm-border: #6a0dad; /* dark purple border */
+		--cm-bg: #120024;
+		--cm-bg-surface: #1e0338;
+		--cm-bg-elevated: #2a054d;
+		--cm-fg: #e0b0ff;
+		--cm-border: rgba(224, 176, 255, 0.15);
 		--cm-bg-inverse: #e0b0ff;
 		--cm-fg-inverse: #120024;
 		--cm-bg-muted: #2b0045;
 	}
 
 	:global(:root.emerald-cave) {
-		--cm-bg: #062010; /* very dark emerald */
-		--cm-fg: #50c878; /* rich emerald green text */
-		--cm-border: #004b23; /* forest dark border */
+		--cm-bg: #062010;
+		--cm-bg-surface: #0a2e18;
+		--cm-bg-elevated: #103f22;
+		--cm-fg: #50c878;
+		--cm-border: rgba(80, 200, 120, 0.2);
 		--cm-bg-inverse: #50c878;
 		--cm-fg-inverse: #062010;
 		--cm-bg-muted: #0c331a;
 	}
 
 	:global(:root.dark-ocean) {
-		--cm-bg: #001220; /* deep dark marine blue */
-		--cm-fg: #00bfff; /* deep sky blue text */
-		--cm-border: #002d4a; /* marine border */
+		--cm-bg: #001220;
+		--cm-bg-surface: #001c33;
+		--cm-bg-elevated: #002847;
+		--cm-fg: #00bfff;
+		--cm-border: rgba(0, 191, 255, 0.2);
 		--cm-bg-inverse: #00bfff;
 		--cm-fg-inverse: #001220;
 		--cm-bg-muted: #00223b;
@@ -185,11 +206,15 @@
 		display: flex;
 		flex-direction: column;
 		min-height: 100vh;
+		width: 100%;
+		overflow-x: hidden;
 	}
 
 	.cm-main-content {
 		flex: 1;
 		width: 100%;
+		max-width: 100%;
+		box-sizing: border-box;
 	}
 
 	.cm-bottom-nav {
@@ -198,7 +223,7 @@
 
 	.cm-nav-item {
 		text-decoration: none;
-		font-size: 0.85rem;
+		font-size: 0.8rem;
 		gap: 2px;
 	}
 

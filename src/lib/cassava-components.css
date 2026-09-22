@@ -1,29 +1,41 @@
 /* 
- * Cassava Mono Components & UI System
- * Filosofi: Thumb-Friendly, Tanpa Radius, Fungsional
+ * Cassava UI System
+ * Elevasi Warna & Border Halus (1-3px)
  */
 
 :root {
   /* --- Typography Variables --- */
-  /* Inter sebagai default, tapi gampang diganti */
   --cm-font-base: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   
-  /* --- Color Variables --- */
-  /* Palet sangat simpel dan gak over-spesifik */
-  --cm-bg: #ffffff;
-  --cm-fg: #111111;
-  --cm-border: #111111;
+  /* --- Color Variables & Elevation Tokens --- */
+  --cm-bg: #f8f9fa;
+  --cm-bg-surface: #ffffff;
+  --cm-bg-elevated: #ffffff;
+  --cm-fg: #1a1d20;
+  --cm-border: rgba(0, 0, 0, 0.08);
+  --cm-border-width: 1px;
   
-  --cm-bg-inverse: #111111;
+  --cm-bg-inverse: #1a1d20;
   --cm-fg-inverse: #ffffff;
   
-  --cm-bg-muted: #f4f4f4;
+  --cm-bg-muted: #f0f2f5;
   --cm-overlay: rgba(0, 0, 0, 0.4);
-  
+
+  /* --- Border Radius Tokens --- */
+  --cm-radius-sm: 6px;
+  --cm-radius: 10px;
+  --cm-radius-lg: 16px;
+  --cm-radius-pill: 9999px;
+
+  /* --- Elevation Shadows --- */
+  --cm-shadow-sm: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.03);
+  --cm-shadow-md: 0 4px 12px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.04);
+  --cm-shadow-lg: 0 10px 25px rgba(0,0,0,0.1), 0 4px 10px rgba(0,0,0,0.05);
+
   /* --- Metrics & Spacing Variables --- */
   --cm-edge-padding: 16px;
-  --cm-nav-height: 56px;
-  --cm-header-tall: 40vh; /* 35-45% viewport sesuai aturan */
+  --cm-nav-height: 60px;
+  --cm-header-tall: 32vh;
   --cm-header-short: 60px;
   --cm-touch-target: 48px;
   
@@ -32,6 +44,11 @@
 }
 
 /* --- Base --- */
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
 body {
   font-family: var(--cm-font-base);
   background-color: var(--cm-bg);
@@ -40,7 +57,7 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* 9. Edge Padding Utility */
+/* Edge Padding Utility */
 .cm-edge-padded {
   padding-left: var(--cm-edge-padding);
   padding-right: var(--cm-edge-padding);
@@ -54,65 +71,91 @@ body {
   justify-content: center;
   min-height: var(--cm-touch-target);
   padding: 0 var(--cm-edge-padding);
-  border: 1px solid var(--cm-border);
-  background-color: var(--cm-bg);
+  border: var(--cm-border-width) solid var(--cm-border);
+  background-color: var(--cm-bg-surface);
   color: var(--cm-fg);
   font-weight: 600;
+  font-size: 0.95rem;
   cursor: pointer;
-  border-radius: 0; /* Haram hukumnya border-radius di Cassava Mono */
+  border-radius: var(--cm-radius);
+  box-shadow: var(--cm-shadow-sm);
   transition: all var(--cm-speed) ease;
   text-decoration: none;
+  box-sizing: border-box;
+  max-width: 100%;
 }
 
-.cm-btn:hover,
-.cm-btn:focus,
-.cm-btn:active,
+.cm-btn:hover {
+  background-color: var(--cm-bg-muted);
+  box-shadow: var(--cm-shadow-md);
+  transform: translateY(-1px);
+}
+
+.cm-btn:active {
+  transform: translateY(0);
+  box-shadow: var(--cm-shadow-sm);
+}
+
 .cm-btn-primary {
   background-color: var(--cm-bg-inverse);
   color: var(--cm-fg-inverse);
+  border-color: transparent;
+  box-shadow: var(--cm-shadow-md);
 }
 
-/* 1 & 7. Thumb Friendly Header & Collapsible (Normal div, center aligned, scrolls naturally) */
+.cm-btn-primary:hover {
+  background-color: var(--cm-bg-inverse);
+  opacity: 0.92;
+  color: var(--cm-fg-inverse);
+}
+
+/* Header Component */
 .cm-thumb-header {
-  height: var(--cm-header-tall);
+  min-height: 180px;
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Center aligned vertically */
-  align-items: center;    /* Center aligned horizontally */
-  text-align: center;     /* Center aligned text */
-  padding: var(--cm-edge-padding);
-  border-bottom: 1px solid var(--cm-border);
-  background-color: var(--cm-bg);
-  position: relative;     /* Not fixed, not sticky! Scrolls naturally! */
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: var(--space-6) var(--cm-edge-padding);
+  border-bottom: var(--cm-border-width) solid var(--cm-border);
+  background-color: var(--cm-bg-surface);
+  box-shadow: var(--cm-shadow-sm);
+  position: relative;
   z-index: 10;
   box-sizing: border-box;
 }
 
 .cm-header-title {
-  font-size: 4rem;        /* 2x bigger (Original was 2rem) */
+  font-size: clamp(2rem, 6vw, 3.5rem);
   line-height: 1.1;
   margin: 0;
   font-weight: 800;
+  letter-spacing: -0.02em;
+  word-break: break-word;
 }
 
 .cm-header-subtitle {
-  font-size: 1.1rem;
-  margin-top: 12px;
+  font-size: clamp(0.9rem, 3vw, 1.1rem);
+  margin-top: 8px;
   color: var(--cm-fg);
-  opacity: 0.7;
+  opacity: 0.75;
+  max-width: 600px;
 }
 
-/* 2. Bottom Navigation */
+/* Bottom Navigation */
 .cm-bottom-nav {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   height: var(--cm-nav-height);
-  background-color: var(--cm-bg);
-  border-top: 1px solid var(--cm-border);
+  background-color: var(--cm-bg-surface);
+  border-top: var(--cm-border-width) solid var(--cm-border);
+  box-shadow: 0 -4px 16px rgba(0,0,0,0.06);
   display: flex;
   z-index: 20;
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 .cm-nav-item {
@@ -123,41 +166,46 @@ body {
   justify-content: center;
   font-family: var(--cm-font-base);
   color: var(--cm-fg);
-  background-color: var(--cm-bg);
+  opacity: 0.65;
+  background-color: transparent;
   border: none;
-  border-left: 1px solid var(--cm-border); /* Pemisah antar menu */
   cursor: pointer;
-  border-radius: 0;
+  transition: all var(--cm-speed) ease;
+  padding: 4px 0;
 }
-.cm-nav-item:first-child {
-  border-left: none;
+
+.cm-nav-item:hover,
+.cm-nav-item.is-active {
+  opacity: 1;
+  color: var(--cm-fg);
 }
 
 .cm-nav-item.is-active {
-  background-color: var(--cm-bg-inverse);
-  color: var(--cm-fg-inverse);
+  font-weight: 700;
 }
 
-/* 3. Thumb Action Bar */
+/* Thumb Action Bar */
 .cm-thumb-action-bar {
   position: fixed;
-  bottom: calc(var(--cm-nav-height) - 1px); /* Nempel di atas Bottom Nav */
+  bottom: calc(var(--cm-nav-height) + env(safe-area-inset-bottom));
   left: 0;
   right: 0;
-  padding: 12px var(--cm-edge-padding);
-  background-color: var(--cm-bg);
-  border-top: 1px solid var(--cm-border);
-  border-bottom: 1px solid var(--cm-border);
+  padding: 10px var(--cm-edge-padding);
+  background-color: var(--cm-bg-surface);
+  border-top: var(--cm-border-width) solid var(--cm-border);
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
   display: flex;
-  gap: var(--cm-edge-padding);
+  gap: var(--space-2);
   z-index: 15;
+  box-sizing: border-box;
 }
 
 .cm-thumb-action-bar .cm-btn {
-  flex: 1; /* Biar tombolnya rata memenuhi space */
+  flex: 1;
+  min-width: 0;
 }
 
-/* 4. Bottom Sheet */
+/* Bottom Sheet */
 .cm-bottom-sheet-overlay {
   position: fixed;
   inset: 0;
@@ -166,49 +214,60 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  /* Animasi fade in overlay bisa ditambah di sini */
+  backdrop-filter: blur(2px);
 }
 
 .cm-bottom-sheet {
-  background-color: var(--cm-bg);
-  border-top: 1px solid var(--cm-border);
+  background-color: var(--cm-bg-surface);
+  border-top-left-radius: var(--cm-radius-lg);
+  border-top-right-radius: var(--cm-radius-lg);
+  border-top: var(--cm-border-width) solid var(--cm-border);
   padding: var(--cm-edge-padding);
+  box-shadow: var(--cm-shadow-lg);
   display: flex;
   flex-direction: column;
-  gap: 8px; /* Jarak antar tombol di sheet */
-  /* Animasi slide up ditaruh di state JS/CSS class tambahan */
+  gap: 12px;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-sizing: border-box;
 }
 
-/* 5. Floating Command Button (FAB Cassava) */
+/* Floating Action Button */
 .cm-fab {
   position: fixed;
-  /* Biasanya di pojok kanan bawah, kasih jarak buat Bottom Nav & margin */
-  bottom: calc(var(--cm-nav-height) + var(--cm-edge-padding));
+  bottom: calc(var(--cm-nav-height) + var(--cm-edge-padding) + env(safe-area-inset-bottom));
   right: var(--cm-edge-padding);
   width: 56px;
   height: 56px;
   background-color: var(--cm-bg-inverse);
   color: var(--cm-fg-inverse);
-  border: 1px solid var(--cm-border);
+  border: none;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 24px;
   cursor: pointer;
   z-index: 25;
-  border-radius: 0; /* Kotak tegas */
-  box-shadow: none; /* No shadow */
+  border-radius: var(--cm-radius-pill);
+  box-shadow: var(--cm-shadow-lg);
+  transition: transform var(--cm-speed) ease, box-shadow var(--cm-speed) ease;
 }
 
-/* 8. Bottom Search */
+.cm-fab:hover {
+  transform: scale(1.05);
+  box-shadow: var(--cm-shadow-lg);
+}
+
+/* Input Fields */
 .cm-bottom-search {
   position: fixed;
   bottom: var(--cm-nav-height);
   left: 0;
   right: 0;
   padding: 12px var(--cm-edge-padding);
-  background-color: var(--cm-bg);
-  border-top: 1px solid var(--cm-border);
+  background-color: var(--cm-bg-surface);
+  border-top: var(--cm-border-width) solid var(--cm-border);
+  box-shadow: var(--cm-shadow-sm);
   z-index: 15;
 }
 
@@ -217,16 +276,18 @@ body {
   height: var(--cm-touch-target);
   padding: 0 16px;
   font-family: var(--cm-font-base);
-  font-size: 1rem;
+  font-size: 0.95rem;
   color: var(--cm-fg);
-  background-color: var(--cm-bg);
-  border: 1px solid var(--cm-border);
-  border-radius: 0;
+  background-color: var(--cm-bg-surface);
+  border: var(--cm-border-width) solid var(--cm-border);
+  border-radius: var(--cm-radius);
+  box-shadow: var(--cm-shadow-sm);
   box-sizing: border-box;
+  transition: border-color var(--cm-speed) ease, box-shadow var(--cm-speed) ease;
 }
 
 .cm-input:focus {
-  outline: 2px solid var(--cm-border);
-  outline-offset: -2px;
+  outline: none;
+  border-color: var(--cm-fg);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.08);
 }
-
