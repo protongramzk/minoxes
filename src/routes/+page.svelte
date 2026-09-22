@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { db } from '$lib/db.js';
 	import { liveQuery } from 'dexie';
-	import { Search, FileText, Trash2, Edit3, Sparkles, Plus, BookOpen, Image, FileCode, Table } from '@lucide/svelte';
+	import { Search, FileText, Trash2, Edit3, Sparkles, BookOpen, Image, FileCode, Table } from '@lucide/svelte';
 
 	let searchQuery = $state('');
 
@@ -96,14 +96,14 @@
 	}
 </script>
 
-<!-- Collapsible Thumb Friendly Header (Normal scroll div, center aligned) -->
+<!-- Header -->
 <header class="cm-thumb-header">
 	<h1 class="cm-header-title">MINOXES</h1>
 	<p class="cm-header-subtitle">Your offline-first, client-side document reader & writer.</p>
 </header>
 
 <div class="cm-container">
-	<!-- Search Input (Follows cm-bottom-search layout look but placed under header for standard list) -->
+	<!-- Search Input -->
 	<div class="search-container">
 		<div class="search-box">
 			<span class="search-icon-wrapper"><Search size={18} /></span>
@@ -134,7 +134,7 @@
 				<div class="document-card">
 					<div class="doc-info">
 						<span class="doc-icon">
-							<IconComp size={32} />
+							<IconComp size={28} />
 						</span>
 						<div class="doc-meta">
 							<span class="doc-name">{doc.name}</span>
@@ -144,15 +144,15 @@
 						</div>
 					</div>
 					<div class="doc-actions">
-						<a href="/reader/{doc.id}" class="cm-btn cm-btn-primary">
+						<a href="/reader/{doc.id}" class="cm-btn cm-btn-primary action-btn">
 							<BookOpen size={16} class="btn-icon" /> Open
 						</a>
 						{#if doc.type === 'md'}
-							<a href="/writer?edit={doc.id}" class="cm-btn">
+							<a href="/writer?edit={doc.id}" class="cm-btn action-btn">
 								<Edit3 size={16} class="btn-icon" /> Edit
 							</a>
 						{/if}
-						<button class="cm-btn btn-danger" onclick={() => deleteDoc(doc.id)}>
+						<button class="cm-btn action-btn btn-danger" onclick={() => deleteDoc(doc.id)}>
 							<Trash2 size={16} class="btn-icon" /> Delete
 						</button>
 					</div>
@@ -165,6 +165,7 @@
 <style>
 	.search-container {
 		margin-bottom: var(--space-4);
+		width: 100%;
 	}
 
 	.search-box {
@@ -189,10 +190,13 @@
 	}
 
 	.empty-state {
-		padding: var(--space-10) 0;
+		padding: var(--space-8) var(--space-4);
 		text-align: center;
 		border: 1px solid var(--cm-border);
-		background-color: var(--cm-bg-muted);
+		border-radius: var(--cm-radius);
+		background-color: var(--cm-bg-surface);
+		box-shadow: var(--cm-shadow-sm);
+		box-sizing: border-box;
 	}
 
 	.empty-icon-wrapper {
@@ -217,6 +221,8 @@
 
 	.empty-actions {
 		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
 		gap: var(--space-3);
 	}
 
@@ -230,16 +236,24 @@
 		flex-direction: column;
 		width: 100%;
 		border: 1px solid var(--cm-border);
-		background-color: var(--cm-bg);
+		border-radius: var(--cm-radius);
+		background-color: var(--cm-bg-surface);
+		box-shadow: var(--cm-shadow-sm);
 		box-sizing: border-box;
+		overflow: hidden;
+		transition: transform var(--cm-speed) ease, box-shadow var(--cm-speed) ease;
+	}
+
+	.document-card:hover {
+		box-shadow: var(--cm-shadow-md);
 	}
 
 	.doc-info {
 		display: flex;
 		align-items: center;
-		padding: var(--space-3);
-		border-bottom: 1px solid var(--cm-border);
+		padding: var(--space-4);
 		gap: var(--space-3);
+		min-width: 0;
 	}
 
 	.doc-icon {
@@ -247,74 +261,93 @@
 		align-items: center;
 		justify-content: center;
 		color: var(--cm-fg);
+		padding: 10px;
+		background-color: var(--cm-bg-muted);
+		border-radius: var(--cm-radius-sm);
+		flex-shrink: 0;
 	}
 
 	.doc-meta {
 		display: flex;
 		flex-direction: column;
 		min-width: 0;
+		flex: 1;
 	}
 
 	.doc-name {
 		font-weight: 700;
-		font-size: 1.1rem;
-		word-break: break-all;
+		font-size: 1.05rem;
+		overflow-wrap: anywhere;
+		word-break: break-word;
+		line-height: 1.3;
 	}
 
 	.doc-details {
 		font-size: 0.8rem;
 		opacity: 0.7;
-		margin-top: var(--space-1);
+		margin-top: 4px;
 	}
 
 	.doc-actions {
 		display: flex;
-		width: 100%;
+		flex-wrap: wrap;
+		gap: 8px;
+		padding: var(--space-3) var(--space-4);
+		background-color: var(--cm-bg-muted);
+		border-top: 1px solid var(--cm-border);
+		box-sizing: border-box;
 	}
 
-	.doc-actions .cm-btn {
+	.action-btn {
+		min-height: 38px;
+		padding: 0 12px;
+		font-size: 0.85rem;
+		border-radius: var(--cm-radius-sm);
+		box-shadow: none;
 		flex: 1;
-		border: none;
-		border-right: 1px solid var(--cm-border);
+		min-width: 80px;
 		gap: 6px;
 	}
 
-	.doc-actions .cm-btn:last-child {
-		border-right: none;
+	.btn-danger {
+		background-color: transparent;
+		color: #d32f2f;
+		border: 1px solid rgba(211, 47, 47, 0.3);
 	}
 
 	.btn-danger:hover,
 	.btn-danger:focus {
 		background-color: #d32f2f;
 		color: white;
+		border-color: #d32f2f;
 	}
 
 	:global(.btn-icon) {
 		display: inline-flex;
 		align-items: center;
+		flex-shrink: 0;
 	}
 
-	@media (min-width: 600px) {
+	@media (min-width: 640px) {
 		.document-card {
 			flex-direction: row;
-			justify-content: space-between;
 			align-items: center;
+			justify-content: space-between;
 		}
 
 		.doc-info {
-			border-bottom: none;
 			flex: 1;
 		}
 
 		.doc-actions {
-			width: auto;
-			border-left: 1px solid var(--cm-border);
+			background-color: transparent;
+			border-top: none;
+			padding: var(--space-3) var(--space-4);
+			flex-wrap: nowrap;
 		}
 
-		.doc-actions .cm-btn {
+		.action-btn {
 			flex: none;
-			padding: 0 var(--space-4);
-			border-top: none;
 		}
 	}
 </style>

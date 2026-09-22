@@ -94,7 +94,6 @@
 
 			case 'txt':
 				const rawText = await blob.text();
-				// Convert plain text newlines to html breaks
 				htmlContent = rawText
 					.replace(/&/g, '&amp;')
 					.replace(/</g, '&lt;')
@@ -132,7 +131,6 @@
 	function renderActiveSheet() {
 		if (!workbook || !activeSheet) return;
 		const ws = workbook.Sheets[activeSheet];
-		// Convert to HTML table with xlsx utility
 		sheetHtml = XLSX.utils.sheet_to_html(ws);
 	}
 
@@ -151,10 +149,7 @@
 	 */
 	async function initPdf(blob) {
 		try {
-			// Import pdfjs-dist dynamically in client-side
 			const pdfjs = await import('pdfjs-dist');
-
-			// Setup worker
 			const workerUrl = new URL('pdfjs-dist/build/pdf.worker.min.mjs', import.meta.url).toString();
 			pdfjs.GlobalWorkerOptions.workerSrc = workerUrl;
 
@@ -187,7 +182,6 @@
 			const ctx = pdfCanvas.getContext('2d');
 			if (!ctx) return;
 
-			// Get standard viewport scale
 			const viewport = pageInstance.getViewport({ scale: 1.5 });
 			pdfCanvas.height = viewport.height;
 			pdfCanvas.width = viewport.width;
@@ -290,7 +284,6 @@
 					</div>
 				{/if}
 				<div class="sheet-table-wrapper cm-scroll-x">
-					<!-- Bind sheet styling to unified CSS variables -->
 					<div class="sheet-html-container">
 						{@html sheetHtml}
 					</div>
@@ -402,7 +395,7 @@
 				</div>
 			</div>
 
-			<!-- Font Picker (Exclude PDF/Images) -->
+			<!-- Font Picker -->
 			{#if doc && ['md', 'txt', 'docx', 'sheet'].includes(doc.type)}
 				<div class="option-section">
 					<span class="option-label">Reader Font Family</span>
@@ -499,12 +492,18 @@
 
 	.reader-container {
 		padding-top: var(--space-4);
+		max-width: 100%;
+		box-sizing: border-box;
 	}
 
 	.loading-state,
 	.error-state {
 		text-align: center;
-		padding: var(--space-10) 0;
+		padding: var(--space-8) var(--space-4);
+		border-radius: var(--cm-radius);
+		border: 1px solid var(--cm-border);
+		background-color: var(--cm-bg-surface);
+		box-shadow: var(--cm-shadow-sm);
 	}
 
 	.loading-spinner {
@@ -531,15 +530,19 @@
 		margin-bottom: var(--space-4);
 	}
 
-	/* prose reading style following Breathing Text rules */
 	.prose-body {
 		font-size: calc(1rem * var(--cm-text-scale, 1.0));
 		line-height: 1.65;
-		max-width: 75ch; /* Humanist Typography limits characters per line */
+		max-width: 75ch;
 		margin: 0 auto;
-		word-wrap: break-word;
-		/* Breathing Text padding using clamping scale */
+		overflow-wrap: anywhere;
+		word-break: break-word;
 		padding: clamp(16px, 2vw, 24px) clamp(16px, 3vw, 32px);
+		background-color: var(--cm-bg-surface);
+		border-radius: var(--cm-radius);
+		border: 1px solid var(--cm-border);
+		box-shadow: var(--cm-shadow-sm);
+		box-sizing: border-box;
 	}
 
 	.prose-body :global(h1),
@@ -564,6 +567,7 @@
 	.prose-body :global(code) {
 		font-family: monospace;
 		background-color: var(--cm-bg-muted);
+		border-radius: var(--cm-radius-sm);
 		padding: 2px 6px;
 		font-size: 0.9em;
 	}
@@ -572,7 +576,9 @@
 		background-color: var(--cm-bg-muted);
 		padding: var(--space-3);
 		overflow-x: auto;
+		border-radius: var(--cm-radius-sm);
 		border: 1px solid var(--cm-border);
+		max-width: 100%;
 	}
 
 	.prose-body :global(pre code) {
@@ -581,36 +587,42 @@
 	}
 
 	.prose-body :global(blockquote) {
-		border-left: 4px solid var(--cm-border);
+		border-left: 3px solid var(--cm-border);
 		margin: 1.5em 0;
 		padding-left: var(--space-4);
 		font-style: italic;
 		opacity: 0.9;
 	}
 
-	/* Sheet styling obeying Unified Theme and overflow scroll */
 	.sheet-tabs {
 		display: flex;
 		gap: var(--space-2);
 		margin-bottom: var(--space-4);
-		border-bottom: 1px solid var(--cm-border);
 		padding-bottom: var(--space-2);
+		max-width: 100%;
 	}
 
 	.tab-btn {
 		min-height: 36px;
 		padding: 0 var(--space-3);
-		font-size: 0.9rem;
+		font-size: 0.88rem;
+		border-radius: var(--cm-radius-sm);
 	}
 
 	.active-tab {
 		background-color: var(--cm-bg-inverse);
 		color: var(--cm-fg-inverse);
+		border-color: transparent;
 	}
 
 	.sheet-table-wrapper {
 		width: 100%;
 		border: 1px solid var(--cm-border);
+		border-radius: var(--cm-radius);
+		background-color: var(--cm-bg-surface);
+		box-shadow: var(--cm-shadow-sm);
+		overflow-x: auto;
+		box-sizing: border-box;
 	}
 
 	.sheet-html-container :global(table) {
@@ -624,8 +636,7 @@
 		border: 1px solid var(--cm-border);
 		padding: var(--space-2) var(--space-3);
 		text-align: left;
-		/* Obey active reader color scheme over hardcoded excel styles */
-		background-color: var(--cm-bg) !important;
+		background-color: var(--cm-bg-surface) !important;
 		color: var(--cm-fg) !important;
 	}
 
@@ -634,48 +645,59 @@
 		background-color: var(--cm-bg-muted) !important;
 	}
 
-	/* Native image viewer */
 	.image-viewer-wrapper {
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		border: 1px solid var(--cm-border);
-		background-color: var(--cm-bg-muted);
+		border-radius: var(--cm-radius);
+		background-color: var(--cm-bg-surface);
+		box-shadow: var(--cm-shadow-sm);
 		padding: var(--space-4);
+		box-sizing: border-box;
+		max-width: 100%;
 	}
 
 	.native-image {
 		max-width: 100%;
 		height: auto;
+		border-radius: var(--cm-radius-sm);
 		border: 1px solid var(--cm-border);
 	}
 
-	/* PDF viewer layout */
 	.pdf-viewer-wrapper {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		gap: var(--space-4);
+		width: 100%;
 	}
 
 	.pdf-controls {
 		display: flex;
 		align-items: center;
-		gap: var(--space-4);
+		justify-content: center;
+		gap: var(--space-3);
+		flex-wrap: wrap;
 	}
 
 	.page-num {
 		font-weight: 700;
+		font-size: 0.9rem;
 	}
 
 	.pdf-canvas-container {
 		width: 100%;
 		max-width: 800px;
 		border: 1px solid var(--cm-border);
+		border-radius: var(--cm-radius);
 		overflow: auto;
-		background-color: var(--cm-bg-muted);
+		background-color: var(--cm-bg-surface);
+		box-shadow: var(--cm-shadow-sm);
 		display: flex;
 		justify-content: center;
+		padding: var(--space-2);
+		box-sizing: border-box;
 	}
 
 	.pdf-canvas {
@@ -683,7 +705,6 @@
 		height: auto;
 	}
 
-	/* Bottom sheet styles */
 	.sheet-header {
 		display: flex;
 		justify-content: space-between;
@@ -740,24 +761,25 @@
 
 	.theme-choice,
 	.font-choice {
-		font-size: 0.9rem;
+		font-size: 0.88rem;
 		justify-content: center;
 		min-height: 40px;
+		border-radius: var(--cm-radius-sm);
+		border: 1px solid var(--cm-border);
 	}
 
-	.light-choice { background-color: #ffffff; color: #111111; border: 1px solid var(--cm-border); }
-	.dark-choice { background-color: #111111; color: #eeeeee; border: 1px solid var(--cm-border); }
-	.sepia-choice { background-color: #f4ecd8; color: #5b4636; border: 1px solid var(--cm-border); }
-	.nord-choice { background-color: #2e3440; color: #d8dee9; border: 1px solid var(--cm-border); }
-	.strawberry-choice { background-color: #fff0f5; color: #8b2500; border: 1px solid #ffb6c1; }
-	.violet-light-choice { background-color: #f3e5f5; color: #4a148c; border: 1px solid #d1c4e9; }
-	.violet-dark-choice { background-color: #120024; color: #e0b0ff; border: 1px solid #6a0dad; }
-	.emerald-cave-choice { background-color: #062010; color: #50c878; border: 1px solid #004b23; }
-	.dark-ocean-choice { background-color: #001220; color: #00bfff; border: 1px solid #002d4a; }
+	.light-choice { background-color: #ffffff; color: #111111; }
+	.dark-choice { background-color: #111111; color: #eeeeee; }
+	.sepia-choice { background-color: #f4ecd8; color: #5b4636; }
+	.nord-choice { background-color: #2e3440; color: #d8dee9; }
+	.strawberry-choice { background-color: #fff0f5; color: #8b2500; }
+	.violet-light-choice { background-color: #f3e5f5; color: #4a148c; }
+	.violet-dark-choice { background-color: #120024; color: #e0b0ff; }
+	.emerald-cave-choice { background-color: #062010; color: #50c878; }
+	.dark-ocean-choice { background-color: #001220; color: #00bfff; }
 
 	.active-choice {
-		outline: 3px solid var(--cm-fg);
-		outline-offset: -3px;
+		box-shadow: 0 0 0 2px var(--cm-fg);
 	}
 
 	.scale-sizer {
@@ -772,6 +794,7 @@
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
+		border-radius: var(--cm-radius-sm);
 	}
 
 	.scale-value {
